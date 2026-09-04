@@ -1,0 +1,137 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Map">
+  <section class="relative">
+    <div id="map" class="h-[calc(100vh-140px)] w-full"></div>
+
+    <div
+      id="filters"
+      class="absolute top-4 left-4 z-10 flex flex-wrap gap-2 max-w-[calc(100%-2rem)]"
+    >
+      <button
+        data-filter="all"
+        class="filter-btn px-3 py-1.5 rounded-full text-sm font-medium shadow-sm"
+      >
+        All
+      </button>
+      <button data-filter="restaurant" class="filter-btn px-3 py-1.5 rounded-full text-sm font-medium shadow-sm">
+        🍽 Restaurants
+      </button>
+      <button data-filter="show" class="filter-btn px-3 py-1.5 rounded-full text-sm font-medium shadow-sm">
+        🎭 Shows
+      </button>
+      <button data-filter="gallery" class="filter-btn px-3 py-1.5 rounded-full text-sm font-medium shadow-sm">
+        🖼 Galleries
+      </button>
+      <button data-filter="garden" class="filter-btn px-3 py-1.5 rounded-full text-sm font-medium shadow-sm">
+        🌿 Gardens
+      </button>
+    </div>
+
+    {!import.meta.env.PUBLIC_MAPBOX_TOKEN && (
+      <div class="absolute inset-0 z-20 flex items-center justify-center bg-[var(--color-paper)]">
+        <div class="max-w-md text-center px-6" style="color: var(--color-ink-soft);">
+          <p class="font-serif text-xl mb-2" style="color: var(--color-ink);">
+            Map needs a Mapbox token
+          </p>
+          <p>
+            Add <code>PUBLIC_MAPBOX_TOKEN</code> to your <code>.env</code> file
+            (see <code>.env.example</code>) and restart the dev server.
+          </p>
+        </div>
+      </div>
+    )}
+  </section>
+</Layout>
+
+<style>
+  .filter-btn {
+    background-color: white;
+    color: var(--color-ink-soft);
+    border: 1px solid var(--color-line);
+  }
+  .filter-btn.active {
+    background-color: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+  }
+  :global(.mapboxgl-popup-content) {
+    font-family: var(--font-sans);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+</style>
+
+<script>
+  import mapboxgl from 'mapbox-gl';
+  import 'mapbox-gl/dist/mapbox-gl.css';
+  import { spots, type SpotCategory } from '../data/spots';
+
+  const token = import.meta.env.PUBLIC_MAPBOX_TOKEN as string | undefined;
+  if (token) {
+    mapboxgl.accessToken = token;
+
+    const categoryColor: Record<SpotCategory, string> = {
+      restaurant: '#b5502f',
+      show: '#7a5c9e',
+      gallery: '#2f7a68',
+      garden: '#4a7c3a',
+    };
+
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/light-v11',
+      center: [10, 30],
+      zoom: 1.6,
+    });
+
+    map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+    const markers: { category: SpotCategory; marker: mapboxgl.Marker }[] = [];
+
+    for (const spot of spots) {
+      const el = document.createElement('div');
+      el.style.width = '14px';
+      el.style.height = '14px';
+      el.style.borderRadius = '50%';
+      el.style.border = '2px solid white';
+      el.style.boxShadow = '0 1px 4px rgba(0,0,0,0.35)';
+      el.style.backgroundColor = categoryColor[spot.category];
+      el.style.cursor = 'pointer';
+
+      const popupHtml = `
+        <div style="font-family: var(--font-serif); font-size: 15px; font-weight: 600; margin-bottom: 2px;">
+          ${spot.name}
+        </div>
+        <div style="font-size: 12px; color: #5c564c; margin-bottom: 6px;">
+          ${spot.city}, ${spot.country}
+        </div>
+        <div style="font-size: 13px;">${spot.note}</div>
+        ${spot.link ? `<a href="${spot.link}" target="_blank" rel="noopener" style="font-size: 12px;">More →</a>` : ''}
+      `;
+
+      const marker = new mapboxgl.Marker({ element: el })
+        .setLngLat([spot.lng, spot.lat])
+        .setPopup(new mapboxgl.Popup({ offset: 12 }).setHTML(popupHtml))
+        .addTo(map);
+
+      markers.push({ category: spot.category, marker });
+    }
+
+    const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        buttons.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        markers.forEach(({ category, marker }) => {
+          const show = filter === 'all' || filter === category;
+          marker.getElement().style.display = show ? 'block' : 'none';
+        });
+      });
+    });
+    buttons[0]?.classList.add('active');
+  }
+</script>
