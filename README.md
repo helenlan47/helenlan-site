@@ -69,6 +69,7 @@ src/
 
 ## Deploying
 
-Push to GitHub, connect the repo to Vercel or Netlify, add
-`PUBLIC_MAPBOX_TOKEN` as an environment variable there too, then point
-the `helenlan.com` domain at it.
+Connected to Vercel via GitHub — every push to `main` auto-deploys to
+production. `helenlan.com` and `www.helenlan.com` are live. Add
+`PUBLIC_MAPBOX_TOKEN` as an environment variable in the Vercel dashboard
+(Settings → Environment Variables) for the map to work in production.
