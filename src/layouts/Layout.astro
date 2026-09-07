@@ -1,12 +1,13 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = 'A journal and a map of favorite places.' } = Astro.props;
+const { title, description = 'A home, a journal, and a map of favorite places.' } = Astro.props;
 ---
 
 <!doctype html>
@@ -23,6 +24,7 @@ const { title, description = 'A journal and a map of favorite places.' } = Astro
       rel="stylesheet"
     />
     <title>{title} · helenlan</title>
+    <ClientRouter />
   </head>
   <body class="min-h-screen flex flex-col">
     <header class="border-b" style="border-color: var(--color-line);">

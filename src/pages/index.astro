@@ -1,31 +1,104 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { rooms } from '../data/apartment';
 ---
 
-<Layout title="Home">
-  <section class="max-w-3xl mx-auto px-6 py-24">
-    <h1 class="font-serif text-5xl leading-tight" style="color: var(--color-ink);">
-      Notes, and a map<br />of the places I love.
+<Layout title="Home" description="A one-bedroom apartment, floor plan as front door.">
+  <section class="max-w-5xl mx-auto px-6 py-12 md:py-16">
+    <p class="text-sm mb-2" style="color: var(--color-ink-soft);">A one-bedroom in New York.</p>
+    <h1 class="font-serif text-3xl md:text-4xl mb-8" style="color: var(--color-ink);">
+      Come in — pick a room.
     </h1>
-    <p class="mt-6 text-lg max-w-xl" style="color: var(--color-ink-soft);">
-      A running journal alongside a curated map of favorite restaurants,
-      shows, galleries, and gardens — collected as I travel.
-    </p>
-    <div class="mt-10 flex gap-4 text-sm font-medium">
-      <a
-        href="/journal"
-        class="px-5 py-2.5 rounded-full text-white"
-        style="background-color: var(--color-accent);"
+
+    <div class="w-full overflow-x-auto">
+      <svg
+        viewBox="0 0 900 600"
+        class="w-full h-auto"
+        style="min-width: 640px;"
+        role="group"
+        aria-label="Apartment floor plan"
       >
-        Read the journal
-      </a>
-      <a
-        href="/map"
-        class="px-5 py-2.5 rounded-full border"
-        style="border-color: var(--color-line); color: var(--color-ink);"
-      >
-        Explore the map
-      </a>
+        <!-- outer walls -->
+        <rect
+          x="40" y="40" width="820" height="520"
+          fill="none" stroke="var(--color-ink)" stroke-width="4"
+        />
+
+        {rooms.map((room) => (
+          <a
+            href={`/home/${room.id}`}
+            class="room-link"
+            data-room={room.id}
+          >
+            <rect
+              x={room.plan.x}
+              y={room.plan.y}
+              width={room.plan.width}
+              height={room.plan.height}
+              class="room-rect"
+              transition:name={`room-${room.id}`}
+            />
+            <text
+              x={room.plan.x + room.plan.width / 2}
+              y={room.plan.y + room.plan.height / 2}
+              text-anchor="middle"
+              dominant-baseline="middle"
+              class="room-label"
+            >
+              {room.name}
+            </text>
+          </a>
+        ))}
+
+        <!-- interior walls (drawn on top of room fills, under labels) -->
+        <g fill="none" stroke="var(--color-ink)" stroke-width="2.5">
+          <line x1="430" y1="140" x2="430" y2="560" />
+          <line x1="520" y1="140" x2="520" y2="560" />
+          <line x1="40" y1="140" x2="430" y2="140" />
+          <line x1="520" y1="140" x2="860" y2="140" />
+          <line x1="40" y1="380" x2="430" y2="380" />
+          <line x1="520" y1="380" x2="860" y2="380" />
+          <line x1="520" y1="480" x2="860" y2="480" />
+        </g>
+
+        <!-- door swing at entry -->
+        <g fill="none" stroke="var(--color-ink-soft)" stroke-width="1.5" stroke-dasharray="3 3">
+          <path d="M 90 40 A 40 40 0 0 1 130 80" />
+        </g>
+        <line x1="90" y1="40" x2="90" y2="80" stroke="var(--color-ink)" stroke-width="3" />
+      </svg>
     </div>
+
+    <p class="mt-6 text-sm max-w-lg" style="color: var(--color-ink-soft);">
+      Every object inside opens into something — books, coffee, wine, travel,
+      style. Click a room to walk in.
+    </p>
   </section>
 </Layout>
+
+<style>
+  .room-link {
+    cursor: pointer;
+  }
+  .room-rect {
+    fill: var(--color-paper);
+    stroke: transparent;
+    stroke-width: 2;
+    transition: fill 0.2s ease;
+  }
+  .room-link:hover .room-rect,
+  .room-link:focus-visible .room-rect {
+    fill: color-mix(in srgb, var(--color-accent) 12%, var(--color-paper));
+  }
+  .room-label {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    fill: var(--color-ink-soft);
+    pointer-events: none;
+    transition: fill 0.2s ease;
+  }
+  .room-link:hover .room-label,
+  .room-link:focus-visible .room-label {
+    fill: var(--color-ink);
+  }
+</style>
