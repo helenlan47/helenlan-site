@@ -10,15 +10,15 @@ interface Hotspot {
   details: string;
 }
 
-// Positions are percentages matching label locations in
-// /public/floorplan-illustrated.jpg (2174x1984, illustrated apartment with
-// labels removed -- anchors sit exactly where the text used to be).
-// Re-measure if you swap the image.
+// Positions are percentages anchored to the actual furniture icons in
+// /public/floorplan-illustrated.jpg (2174x1984, unlabeled illustration).
+// Re-measure if you swap the image -- icon positions shift between
+// image generations even at the same aspect ratio.
 const HOTSPOTS: Hotspot[] = [
   {
     id: 'espresso',
     title: 'Espresso Machine',
-    top: '4.3%',
+    top: '16.7%',
     left: '42.5%',
     category: 'Kitchen',
     details: 'Current Favorite Beans: Ethiopian Yirgacheffe (Light Roast) for bright fruit notes.',
@@ -26,15 +26,15 @@ const HOTSPOTS: Hotspot[] = [
   {
     id: 'bookshelf',
     title: 'Bookshelf',
-    top: '29.2%',
-    left: '4.4%',
+    top: '27.4%',
+    left: '6.0%',
     category: 'Living Room',
     details: 'Top reads on rotation -- placeholder, swap in your real favorites.',
   },
   {
     id: 'favorite-artists',
     title: 'Favorite Artists Collection',
-    top: '34.8%',
+    top: '23.6%',
     left: '15.0%',
     category: 'Living Room',
     details: 'A coffee table book of favorite artists -- placeholder, add yours.',
@@ -42,64 +42,64 @@ const HOTSPOTS: Hotspot[] = [
   {
     id: 'snack-pantry',
     title: 'Snack Pantry',
-    top: '40.3%',
-    left: '41.4%',
+    top: '32.9%',
+    left: '39.5%',
     category: 'Kitchen',
     details: 'Go-to snacks -- placeholder, swap for your real favorites.',
   },
   {
     id: 'wine-fridge',
     title: 'Wine Fridge',
-    top: '25.8%',
-    left: '51.4%',
+    top: '39.2%',
+    left: '58.0%',
     category: 'Kitchen',
     details: 'A few bottles always on hand -- placeholder wine picks.',
   },
   {
     id: 'travel-magnets',
     title: 'Travel Magnets',
-    top: '38.7%',
-    left: '58.9%',
+    top: '32.6%',
+    left: '58.0%',
     category: 'Kitchen',
     details: 'Recent travels: Tokyo, Kyoto, Copenhagen, Mexico City.',
   },
   {
     id: 'skincare-routine',
     title: 'Skincare Routine',
-    top: '44.2%',
-    left: '48.1%',
+    top: '54.5%',
+    left: '47.3%',
     category: 'Bathroom',
     details: 'Daily Routine: Gentle Cleanser, Vitamin C Serum, Hyaluronic Acid, SPF 50.',
   },
   {
     id: 'book-collection',
     title: 'Book Collection',
-    top: '60.3%',
-    left: '12.9%',
+    top: '55.3%',
+    left: '6.0%',
     category: 'Living Room',
     details: 'A small personal library at the desk -- placeholder, add your books.',
   },
   {
     id: 'style-closet',
     title: 'Style Closet',
-    top: '57.8%',
-    left: '83.8%',
+    top: '56.4%',
+    left: '85.0%',
     category: 'Bedroom',
     details: 'Signature pieces and go-to silhouettes -- placeholder style notes.',
   },
   {
     id: 'sports-closet',
     title: 'Sports Closet',
-    top: '82.7%',
-    left: '19.3%',
+    top: '78.9%',
+    left: '9.0%',
     category: 'Entry',
     details: 'Gear for staying active -- placeholder.',
   },
   {
     id: 'shoe-closet',
     title: 'Shoe Closet',
-    top: '80.2%',
-    left: '37.3%',
+    top: '71.2%',
+    left: '27.0%',
     category: 'Entry',
     details: 'Favorite pairs, by rotation -- placeholder.',
   },
