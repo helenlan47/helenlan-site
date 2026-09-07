@@ -109,15 +109,14 @@ export default function FloorPlanLanding() {
   const [activeSpot, setActiveSpot] = useState<Hotspot | null>(null);
 
   return (
-    <div className="relative w-full h-screen bg-neutral-900 text-white overflow-hidden flex flex-col items-center justify-center">
+    <div className="relative w-full min-h-screen bg-white text-neutral-900 overflow-hidden flex flex-col items-center justify-center">
       {/* Header / Navigation */}
       <header className="absolute top-6 left-8 z-20">
-        <h1 className="text-2xl font-serif tracking-wide text-amber-100">My NYC Apartment</h1>
-        <p className="text-xs text-neutral-400 mt-1">Click any hotspot to explore my space & interests</p>
+        <h1 className="text-2xl font-serif tracking-wide text-neutral-800">A glimpse into Helen</h1>
       </header>
 
       {/* Main Floor Plan Container */}
-      <div className="relative w-full max-w-3xl aspect-[2174/1984] rounded-xl shadow-2xl overflow-hidden border border-neutral-800 bg-white">
+      <div className="relative w-full max-w-3xl aspect-[2174/1984]">
         {/* Render Floor Plan Image */}
         <img
           src="/floorplan-illustrated.jpg"
@@ -136,7 +135,7 @@ export default function FloorPlanLanding() {
             {/* Animated Pulse Pin */}
             <span className="relative flex h-6 w-6">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-6 w-6 bg-amber-500 border-2 border-white items-center justify-center text-[10px] font-bold text-neutral-900">
+              <span className="relative inline-flex rounded-full h-6 w-6 bg-amber-500 items-center justify-center text-[10px] font-bold text-neutral-900">
                 +
               </span>
             </span>
