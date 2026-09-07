@@ -122,7 +122,7 @@ export default function FloorPlanLanding() {
   return (
     <div className="relative w-full min-h-screen bg-white text-neutral-900 overflow-hidden flex flex-col items-center justify-center">
       {/* Header / Navigation */}
-      <header className="absolute top-6 left-8 z-20">
+      <header className="absolute top-6 left-0 right-0 z-20 text-center">
         <h1 className="text-2xl font-serif tracking-wide text-neutral-800">a glimpse into Helen</h1>
       </header>
 
