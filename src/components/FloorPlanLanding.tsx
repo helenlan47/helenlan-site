@@ -10,40 +10,98 @@ interface Hotspot {
   details: string;
 }
 
-// Positions are percentages matching room locations in /public/floorplan.jpg
-// (1019x930 real floor plan). Re-measure if you swap the image.
+// Positions are percentages matching label locations in
+// /public/floorplan-illustrated.jpg (2174x1984, illustrated apartment with
+// labels removed -- anchors sit exactly where the text used to be).
+// Re-measure if you swap the image.
 const HOTSPOTS: Hotspot[] = [
   {
     id: 'espresso',
-    title: 'Espresso Bar',
-    top: '25%',
-    left: '42%',
+    title: 'Espresso Machine',
+    top: '4.3%',
+    left: '42.5%',
     category: 'Kitchen',
     details: 'Current Favorite Beans: Ethiopian Yirgacheffe (Light Roast) for bright fruit notes.',
   },
   {
     id: 'bookshelf',
     title: 'Bookshelf',
-    top: '22%',
-    left: '8%',
+    top: '29.2%',
+    left: '4.4%',
     category: 'Living Room',
-    details: 'Top reads: Design Systems, Mid-Century Architecture History, Sci-Fi Novels.',
+    details: 'Top reads on rotation -- placeholder, swap in your real favorites.',
   },
   {
-    id: 'vanity',
-    title: 'Skincare Vanity',
-    top: '61%',
-    left: '57%',
+    id: 'favorite-artists',
+    title: 'Favorite Artists Collection',
+    top: '34.8%',
+    left: '15.0%',
+    category: 'Living Room',
+    details: 'A coffee table book of favorite artists -- placeholder, add yours.',
+  },
+  {
+    id: 'snack-pantry',
+    title: 'Snack Pantry',
+    top: '40.3%',
+    left: '41.4%',
+    category: 'Kitchen',
+    details: 'Go-to snacks -- placeholder, swap for your real favorites.',
+  },
+  {
+    id: 'wine-fridge',
+    title: 'Wine Fridge',
+    top: '25.8%',
+    left: '51.4%',
+    category: 'Kitchen',
+    details: 'A few bottles always on hand -- placeholder wine picks.',
+  },
+  {
+    id: 'travel-magnets',
+    title: 'Travel Magnets',
+    top: '38.7%',
+    left: '58.9%',
+    category: 'Kitchen',
+    details: 'Recent travels: Tokyo, Kyoto, Copenhagen, Mexico City.',
+  },
+  {
+    id: 'skincare-routine',
+    title: 'Skincare Routine',
+    top: '44.2%',
+    left: '48.1%',
     category: 'Bathroom',
     details: 'Daily Routine: Gentle Cleanser, Vitamin C Serum, Hyaluronic Acid, SPF 50.',
   },
   {
-    id: 'fridge-magnets',
-    title: 'Travel Magnets',
-    top: '32%',
-    left: '58%',
-    category: 'Kitchen',
-    details: 'Recent travels: Tokyo, Kyoto, Copenhagen, Mexico City.',
+    id: 'book-collection',
+    title: 'Book Collection',
+    top: '60.3%',
+    left: '12.9%',
+    category: 'Living Room',
+    details: 'A small personal library at the desk -- placeholder, add your books.',
+  },
+  {
+    id: 'style-closet',
+    title: 'Style Closet',
+    top: '57.8%',
+    left: '83.8%',
+    category: 'Bedroom',
+    details: 'Signature pieces and go-to silhouettes -- placeholder style notes.',
+  },
+  {
+    id: 'sports-closet',
+    title: 'Sports Closet',
+    top: '82.7%',
+    left: '19.3%',
+    category: 'Entry',
+    details: 'Gear for staying active -- placeholder.',
+  },
+  {
+    id: 'shoe-closet',
+    title: 'Shoe Closet',
+    top: '80.2%',
+    left: '37.3%',
+    category: 'Entry',
+    details: 'Favorite pairs, by rotation -- placeholder.',
   },
 ];
 
@@ -59,11 +117,11 @@ export default function FloorPlanLanding() {
       </header>
 
       {/* Main Floor Plan Container */}
-      <div className="relative w-full max-w-3xl aspect-[1019/930] rounded-xl shadow-2xl overflow-hidden border border-neutral-800 bg-white">
+      <div className="relative w-full max-w-3xl aspect-[2174/1984] rounded-xl shadow-2xl overflow-hidden border border-neutral-800 bg-white">
         {/* Render Floor Plan Image */}
         <img
-          src="/floorplan.jpg"
-          alt="Apartment floor plan"
+          src="/floorplan-illustrated.jpg"
+          alt="Illustrated apartment floor plan"
           className="w-full h-full object-contain"
         />
 
