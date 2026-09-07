@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { getExpansion } from '../data/hotspotExpansions';
+import HotspotExpansionModal from './HotspotExpansionModal';
 
 interface Hotspot {
   id: string;
@@ -107,6 +109,15 @@ const HOTSPOTS: Hotspot[] = [
 
 export default function FloorPlanLanding() {
   const [activeSpot, setActiveSpot] = useState<Hotspot | null>(null);
+  const [expansionSpot, setExpansionSpot] = useState<Hotspot | null>(null);
+
+  function handleHotspotClick(spot: Hotspot) {
+    if (getExpansion(spot.id)) {
+      setExpansionSpot(spot);
+    } else {
+      setActiveSpot(spot);
+    }
+  }
 
   return (
     <div className="relative w-full min-h-screen bg-white text-neutral-900 overflow-hidden flex flex-col items-center justify-center">
@@ -128,7 +139,7 @@ export default function FloorPlanLanding() {
         {HOTSPOTS.map((spot) => (
           <button
             key={spot.id}
-            onClick={() => setActiveSpot(spot)}
+            onClick={() => handleHotspotClick(spot)}
             style={{ top: spot.top, left: spot.left }}
             className="absolute transform -translate-x-1/2 -translate-y-1/2 group focus:outline-none"
           >
@@ -175,6 +186,17 @@ export default function FloorPlanLanding() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Rich expansion modal (template -- add more hotspots to
+          hotspotExpansions.ts to opt them into this instead of the
+          simple drawer above) */}
+      {expansionSpot && (
+        <HotspotExpansionModal
+          title={expansionSpot.title}
+          expansion={getExpansion(expansionSpot.id)!}
+          onClose={() => setExpansionSpot(null)}
+        />
+      )}
     </div>
   );
 }
