@@ -125,6 +125,14 @@ export default function FloorPlanLanding() {
           above the floor plan, wherever that lands vertically */}
       <header className="text-center mb-4">
         <h1 className="text-2xl font-serif tracking-wide text-neutral-800">a glimpse into Helen</h1>
+        <nav className="mt-2 flex gap-4 justify-center text-sm text-neutral-500">
+          <a href="/journal" className="hover:underline">
+            journal
+          </a>
+          <a href="/map" className="hover:underline">
+            map
+          </a>
+        </nav>
       </header>
 
       {/* Main Floor Plan Container */}
