@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { HotspotExpansion, ExpansionSection } from '../data/hotspotExpansions';
+import type { HotspotExpansion, ExpansionSection, Subject } from '../data/hotspotExpansions';
 
 interface Props {
   title: string;
@@ -8,7 +8,13 @@ interface Props {
   onClose: () => void;
 }
 
-function SectionCard({ section }: { section: ExpansionSection }) {
+function SectionCard({
+  section,
+  onEnlarge,
+}: {
+  section: ExpansionSection;
+  onEnlarge: (subject: Subject) => void;
+}) {
   const [flipped, setFlipped] = useState(false);
 
   return (
@@ -68,10 +74,14 @@ function SectionCard({ section }: { section: ExpansionSection }) {
                 <img
                   src={subject.photo || '/placeholder-photo.svg'}
                   alt={subject.caption}
-                  className="w-12 h-12 rounded-md object-cover flex-shrink-0"
+                  className="w-12 h-12 rounded-md object-cover flex-shrink-0 cursor-zoom-in"
                   style={{ border: '1px solid var(--color-line)' }}
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = '/placeholder-photo.svg';
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (subject.photo) onEnlarge(subject);
                   }}
                 />
                 {subject.link ? (
@@ -100,6 +110,8 @@ function SectionCard({ section }: { section: ExpansionSection }) {
 }
 
 export default function HotspotExpansionModal({ title, expansion, onClose }: Props) {
+  const [enlarged, setEnlarged] = useState<Subject | null>(null);
+
   return (
     <AnimatePresence>
       <motion.div
@@ -144,11 +156,34 @@ export default function HotspotExpansionModal({ title, expansion, onClose }: Pro
 
           <div className="flex flex-col sm:flex-row gap-4">
             {expansion.sections.map((section) => (
-              <SectionCard key={section.id} section={section} />
+              <SectionCard key={section.id} section={section} onEnlarge={setEnlarged} />
             ))}
           </div>
         </motion.div>
       </motion.div>
+
+      {/* Lightbox -- click anywhere to dismiss */}
+      {enlarged && (
+        <motion.div
+          key="lightbox"
+          className="fixed inset-0 z-[60] flex items-center justify-center p-6 cursor-zoom-out"
+          style={{ background: 'rgba(20,17,14,0.85)' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={() => setEnlarged(null)}
+        >
+          <motion.img
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.2 }}
+            src={enlarged.photo}
+            alt={enlarged.caption}
+            className="max-w-full max-h-[85vh] rounded-lg shadow-2xl"
+          />
+        </motion.div>
+      )}
     </AnimatePresence>
   );
 }
