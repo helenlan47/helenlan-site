@@ -7,6 +7,8 @@ export interface Subject {
   photo?: string;
   /** One line describing the photo. */
   caption: string;
+  /** Optional -- makes the caption a link (opens in a new tab). */
+  link?: string;
 }
 
 export interface ExpansionSection {
@@ -34,9 +36,21 @@ export const hotspotExpansions: HotspotExpansion[] = [
         id: 'beans',
         label: 'Beans',
         subjects: [
-          { caption: 'Placeholder: Ethiopian Yirgacheffe, light roast' },
-          { caption: 'Placeholder: a second bean you love' },
-          { caption: 'Placeholder: a third bean you love' },
+          {
+            caption: "CoRo: Morgan's Blend [Berkeley, CA]",
+            link: 'https://www.corocoffeeroom.com/corocoffeebrand/coro-morgans-blend',
+            photo: '/coffee-beans-morgans-blend.jpeg',
+          },
+          {
+            caption: 'Black and White Coffee Roasters: Hambela Natural (EA Decaf) [Raleigh, NC]',
+            link: 'https://www.blackwhiteroasters.com/collections/all-coffee',
+            photo: '/coffee-beans-black-and-white-decaf.jpeg',
+          },
+          {
+            caption: 'Moonwake: Granja Paraiso 92 Thermal Shock Caturra [San Jose, CA]',
+            link: 'https://moonwakecoffeeroasters.com/products/granja-paraiso-92-thermal-shock-caturra-colombia',
+            photo: '/coffee-beans-moonwake-granja-pariso-92.jpeg',
+          },
         ],
       },
       {

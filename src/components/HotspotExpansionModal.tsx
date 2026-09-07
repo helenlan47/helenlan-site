@@ -70,10 +70,26 @@ function SectionCard({ section }: { section: ExpansionSection }) {
                   alt={subject.caption}
                   className="w-12 h-12 rounded-md object-cover flex-shrink-0"
                   style={{ border: '1px solid var(--color-line)' }}
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = '/placeholder-photo.svg';
+                  }}
                 />
-                <p className="text-xs leading-snug" style={{ color: 'var(--color-ink)' }}>
-                  {subject.caption}
-                </p>
+                {subject.link ? (
+                  <a
+                    href={subject.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-xs leading-snug hover:underline"
+                    style={{ color: 'var(--color-accent)' }}
+                  >
+                    {subject.caption}
+                  </a>
+                ) : (
+                  <p className="text-xs leading-snug" style={{ color: 'var(--color-ink)' }}>
+                    {subject.caption}
+                  </p>
+                )}
               </div>
             ))}
           </div>
