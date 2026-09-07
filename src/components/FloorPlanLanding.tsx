@@ -10,12 +10,14 @@ interface Hotspot {
   details: string;
 }
 
+// Positions are percentages matching room locations in /public/floorplan.jpg
+// (1019x930 real floor plan). Re-measure if you swap the image.
 const HOTSPOTS: Hotspot[] = [
   {
     id: 'espresso',
     title: 'Espresso Bar',
-    top: '38%',
-    left: '28%',
+    top: '25%',
+    left: '42%',
     category: 'Kitchen',
     details: 'Current Favorite Beans: Ethiopian Yirgacheffe (Light Roast) for bright fruit notes.',
   },
@@ -23,23 +25,23 @@ const HOTSPOTS: Hotspot[] = [
     id: 'bookshelf',
     title: 'Bookshelf',
     top: '22%',
-    left: '65%',
+    left: '8%',
     category: 'Living Room',
     details: 'Top reads: Design Systems, Mid-Century Architecture History, Sci-Fi Novels.',
   },
   {
     id: 'vanity',
     title: 'Skincare Vanity',
-    top: '70%',
-    left: '15%',
+    top: '61%',
+    left: '57%',
     category: 'Bathroom',
     details: 'Daily Routine: Gentle Cleanser, Vitamin C Serum, Hyaluronic Acid, SPF 50.',
   },
   {
     id: 'fridge-magnets',
     title: 'Travel Magnets',
-    top: '42%',
-    left: '32%',
+    top: '32%',
+    left: '58%',
     category: 'Kitchen',
     details: 'Recent travels: Tokyo, Kyoto, Copenhagen, Mexico City.',
   },
@@ -57,12 +59,12 @@ export default function FloorPlanLanding() {
       </header>
 
       {/* Main Floor Plan Container */}
-      <div className="relative w-full max-w-5xl aspect-video rounded-xl shadow-2xl overflow-hidden border border-neutral-800">
+      <div className="relative w-full max-w-3xl aspect-[1019/930] rounded-xl shadow-2xl overflow-hidden border border-neutral-800 bg-white">
         {/* Render Floor Plan Image */}
         <img
-          src="/floorplan-midcentury.svg"
-          alt="Mid-Century Modern Apartment Floor Plan"
-          className="w-full h-full object-cover"
+          src="/floorplan.jpg"
+          alt="Apartment floor plan"
+          className="w-full h-full object-contain"
         />
 
         {/* Hotspots Overlay Layer */}
