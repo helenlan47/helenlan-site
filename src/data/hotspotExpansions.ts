@@ -30,7 +30,7 @@ export interface HotspotExpansion {
 export const hotspotExpansions: HotspotExpansion[] = [
   {
     hotspotId: "espresso",
-    intro: "Placeholder intro -- replace with 1-2 real sentences about espresso machine.",
+    intro: "Placeholder intro -- replace with 1-2 real sentences about espresso.",
     sections: [
       {
         id: "beans",
@@ -57,6 +57,38 @@ export const hotspotExpansions: HotspotExpansion[] = [
         { caption: "Kijitora [Williamsburg]" },
         { caption: "Verse [Astoria]" },
         { caption: "Rok [West Village]" },
+        ],
+      },
+    ],
+  },
+  {
+    hotspotId: "wine-fridge",
+    intro: "Placeholder intro -- replace with 1-2 real sentences about wine fridge.",
+    sections: [
+      {
+        id: "red",
+        label: "Red",
+        subjects: [
+        { caption: "Kosta Browne: Pinot Noir 2021 [Russian River Valley, CA]", photo: "/wine-red-kosta-browne.jpeg" },
+        { caption: "Austin Hope: Cabernet Sauvignon [Paso Robles, CA]", photo: "/wine-red-austin-hope.jpeg" },
+        { caption: "Tenuta San Guido: Sassicaia 2019 [Tuscany, Italy]", photo: "/wine-red-sassicaia.jpeg" },
+        ],
+      },
+      {
+        id: "white",
+        label: "White",
+        subjects: [
+        { caption: "Willi Schaefer: Graacher Domprobst Riesling Kabinett 2024 [Mosel, Germany]", photo: "/wine-white-willi-schaefer.jpeg" },
+        { caption: "Susana Balbo: CRIOS Torrontes 2023 [Uco Valley, Argentina]", photo: "/wine-white-crios.jpeg" },
+        { caption: "Nieport Wine: Redoma Branco Revera 2024 [Douro, Portugal]", photo: "/wine-white-nieport.jpeg" },
+        ],
+      },
+      {
+        id: "wine-bars",
+        label: "Wine Bars",
+        subjects: [
+        { caption: "Stars [East Village, NYC]" },
+        { caption: "Sauced [Williamsburg & Lower East Side, NYC]" },
         ],
       },
     ],

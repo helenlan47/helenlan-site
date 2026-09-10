@@ -2,25 +2,35 @@
 """Sync src/data/hotspotExpansions.ts from the Notion page (Helen's House).
 
 Convention:
-  H1 "Hotspot <Title>"        -> a hotspot, matched to HOTSPOTS[].title in
-                                  FloorPlanLanding.tsx (case-insensitive)
-  paragraph(s) right after    -> intro text (until the first H2)
-  H2 "<Section>"              -> a section (e.g. Beans, Cafes, Matcha)
-  numbered/bulleted item      -> either:
-                                  (a) a "tier" grouping (e.g. "Went back
-                                      for") whose own nested list items are
-                                      the actual subjects, or
-                                  (b) directly a subject (plain caption)
-                                  Only the "went back for" tier is synced;
-                                  other tiers (Liked, Not again) are parsed
-                                  but not yet surfaced in the UI.
+  H1 "<Title>" (optionally prefixed "Hotspot ")
+                               -> a hotspot. Matched to a known hotspot id
+                                  (HOTSPOTS[].id in FloorPlanLanding.tsx)
+                                  if the title, lowercased, either exactly
+                                  equals or is a leading-word match of a
+                                  known hotspot title (e.g. "Wine" matches
+                                  "Wine Fridge"). The "Hotspot " prefix is
+                                  just an explicit way to mark it ready.
+  paragraph(s) right after    -> intro text (until the first section)
+  Section can be written two ways, both supported:
+    (a) explicit: H2 "<Section>", followed by its list items as siblings
+        (Notion's block tree is flat -- items under a heading are
+        siblings, not children of the heading)
+    (b) implicit: a top-level list item with nested children IS the
+        section (its own text is the section label, its children are
+        the section's items) -- used when there's no H2 layer
+  Within a section, a list item is either:
+    - a "tier" grouping (e.g. "Went back for") whose own nested list
+      items are the actual subjects -- only this tier is synced today;
+      other tiers (Liked, Not again) are parsed but not yet surfaced
+      in the UI, or
+    - directly a subject (plain caption), when tiers aren't used
   subject's nested items      -> "link: <url>" and/or "photo: <filename>"
                                   lines, parsed as the Subject's fields.
                                   photo values are used as /<filename> --
                                   drop the actual file in public/.
 
-H1 headings WITHOUT a "Hotspot " prefix are parsed but not written --
-they're treated as drafts not yet wired to a real hotspot.
+H1 headings that don't match any known hotspot are parsed but not
+written -- treated as drafts not yet wired to a real hotspot.
 
 Usage: python3 scripts/sync_notion.py [--write]
   Without --write, prints a summary of what it found and would change.
@@ -36,6 +46,37 @@ REPO_ROOT = os.path.dirname(SCRIPT_DIR)
 OUT_PATH = os.path.join(REPO_ROOT, "src/data/hotspotExpansions.ts")
 
 TIER_NAME = "went back for"
+
+# id mapping: matches the `id` field of HOTSPOTS in FloorPlanLanding.tsx
+TITLE_TO_ID = {
+    "espresso machine": "espresso",
+    "bookshelf": "bookshelf",
+    "favorite artists collection": "favorite-artists",
+    "snack pantry": "snack-pantry",
+    "wine fridge": "wine-fridge",
+    "travel magnets": "travel-magnets",
+    "skincare routine": "skincare-routine",
+    "book collection": "book-collection",
+    "style closet": "style-closet",
+    "sports closet": "sports-closet",
+    "shoe closet": "shoe-closet",
+}
+
+
+def resolve_hotspot(raw_title):
+    """Match an H1 title to a known hotspot id. Strips a leading
+    'Hotspot ' if present, then matches exactly or as a leading-word
+    prefix (e.g. 'Wine' -> 'wine fridge')."""
+    t = raw_title.strip()
+    if t.lower().startswith("hotspot "):
+        t = t[len("hotspot "):].strip()
+    key = t.lower()
+    if key in TITLE_TO_ID:
+        return t, TITLE_TO_ID[key]
+    for title, hid in TITLE_TO_ID.items():
+        if title == key or title.startswith(key + " "):
+            return t, hid
+    return t, None
 
 
 def load_env():
@@ -114,10 +155,10 @@ def parse_subject(item_block):
 
 
 def parse_list_item_as_section_content(item, subjects):
-    """A list item that is a direct sibling of its H2 (Notion's block tree
-    is flat -- list items under a heading are siblings, not children of
-    the heading). Either a tier grouper (with the actual subjects nested
-    inside it) or, if tiers aren't used, a subject directly."""
+    """A list item within a section (either a sibling of an explicit H2,
+    or a child of an implicit-section grouping item). Either a tier
+    grouper (with the actual subjects nested inside it) or, if tiers
+    aren't used, a subject directly."""
     text = plain_text(item)
     if not text:
         return
@@ -129,6 +170,18 @@ def parse_list_item_as_section_content(item, subjects):
         return  # parsed tiers, not yet synced
     else:
         subjects.append(parse_subject(item))
+
+
+def parse_implicit_section(item):
+    """A top-level list item with children, when no H2 governs it: its
+    own text is the section label, its children are the section's list
+    items (same tier-or-direct handling as an explicit section)."""
+    label = plain_text(item)
+    subjects = []
+    for child in get_children(item["id"]):
+        if is_list_item(child):
+            parse_list_item_as_section_content(child, subjects)
+    return label, subjects[:3]
 
 
 def main():
@@ -143,32 +196,38 @@ def main():
     while i < len(blocks):
         b = blocks[i]
         if b["type"] == "heading_1":
-            title = plain_text(b)
-            has_prefix = title.lower().startswith("hotspot ")
-            clean_title = title[len("hotspot "):].strip() if has_prefix else title
+            raw_title = plain_text(b)
+            clean_title, hotspot_id = resolve_hotspot(raw_title)
             i += 1
             intro_parts = []
             sections = []
+            expecting_h2_items = False  # True right after an explicit H2
             while i < len(blocks) and blocks[i]["type"] != "heading_1":
                 cur = blocks[i]
                 if cur["type"] == "heading_2":
                     sections.append([plain_text(cur), []])
-                elif is_list_item(cur) and sections:
+                    expecting_h2_items = True
+                elif is_list_item(cur) and expecting_h2_items:
+                    # explicit section: this item is a sibling of the H2
                     parse_list_item_as_section_content(cur, sections[-1][1])
+                elif is_list_item(cur) and cur.get("has_children"):
+                    # implicit section: this item IS the section (each
+                    # such top-level item starts its own new section)
+                    sections.append(list(parse_implicit_section(cur)))
                 elif cur["type"] == "paragraph" and not sections:
                     text = plain_text(cur)
                     if text:
                         intro_parts.append(text)
                 i += 1
             sections = [(label, subs[:3]) for label, subs in sections]
-            hotspots.append((clean_title, has_prefix, " ".join(intro_parts), sections))
+            hotspots.append((clean_title, hotspot_id, " ".join(intro_parts), sections))
         else:
             i += 1
 
     print(f"Found {len(hotspots)} H1 heading(s) on the page:\n")
     ready = []
-    for title, has_prefix, intro, sections in hotspots:
-        tag = "SYNC" if has_prefix else "skip (no 'Hotspot ' prefix)"
+    for title, hotspot_id, intro, sections in hotspots:
+        tag = f"SYNC -> {hotspot_id}" if hotspot_id else "skip (no matching hotspot)"
         print(f"  [{tag}] {title}")
         if intro:
             print(f"      intro: {intro[:70]}")
@@ -183,9 +242,9 @@ def main():
                 extra_s = f" ({', '.join(extra)})" if extra else ""
                 print(f"          * {s['caption']}{extra_s}")
         has_content = any(subjects for _, subjects in sections)
-        if has_prefix and has_content:
-            ready.append((title, intro, sections))
-        elif has_prefix and not has_content:
+        if hotspot_id and has_content:
+            ready.append((hotspot_id, intro, sections))
+        elif hotspot_id and not has_content:
             print("      (no populated sections yet -- not synced, left as-is on the site)")
         print()
 
@@ -202,29 +261,10 @@ def ts_string(s):
 
 
 def write_ts(hotspot_list):
-    # id mapping: matches the `id` field of HOTSPOTS in FloorPlanLanding.tsx
-    title_to_id = {
-        "espresso machine": "espresso",
-        "bookshelf": "bookshelf",
-        "favorite artists collection": "favorite-artists",
-        "snack pantry": "snack-pantry",
-        "wine fridge": "wine-fridge",
-        "travel magnets": "travel-magnets",
-        "skincare routine": "skincare-routine",
-        "book collection": "book-collection",
-        "style closet": "style-closet",
-        "sports closet": "sports-closet",
-        "shoe closet": "shoe-closet",
-    }
-
     entries = []
-    for title, intro, sections in hotspot_list:
-        hotspot_id = title_to_id.get(title.lower())
-        if not hotspot_id:
-            print(f"  (warning: no known hotspot id for '{title}', skipping)", file=sys.stderr)
-            continue
+    for hotspot_id, intro, sections in hotspot_list:
         if not intro:
-            intro = f"Placeholder intro -- replace with 1-2 real sentences about {title.lower()}."
+            intro = f"Placeholder intro -- replace with 1-2 real sentences about {hotspot_id.replace('-', ' ')}."
         section_entries = []
         for label, subjects in sections:
             if not subjects:
