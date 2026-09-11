@@ -46,6 +46,9 @@ REPO_ROOT = os.path.dirname(SCRIPT_DIR)
 OUT_PATH = os.path.join(REPO_ROOT, "src/data/hotspotExpansions.ts")
 
 TIER_NAME = "went back for"
+MAX_SUBJECTS = 10  # a card's back scrolls, so this is a sanity cap, not a UI limit
+DEFAULT_SECTION_LABEL = "Routine"  # used when items sit directly under
+                                    # the H1 with no H2 or grouping item
 
 # id mapping: matches the `id` field of HOTSPOTS in FloorPlanLanding.tsx
 TITLE_TO_ID = {
@@ -137,10 +140,35 @@ def is_list_item(block):
 
 
 def parse_subject(item_block):
-    """A subject leaf: its own text is the caption; its children (if any)
-    are 'link: ...' / 'photo: ...' lines."""
-    caption = plain_text(item_block).rstrip(":").strip()
+    """A subject leaf. The caption/link can come two ways:
+    (a) an inline Notion hyperlink directly in the item's own text, e.g.
+        "POLA cleanser: <linked url>" -- the linked segment becomes
+        `link`, the rest becomes `caption`, or
+    (b) the item's own text is just the caption, and its children (if
+        any) are 'link: ...' / 'photo: ...' lines.
+    Both can combine (e.g. inline link + a nested photo: line)."""
+    t = item_block["type"]
+    rich = item_block.get(t, {}).get("rich_text", [])
+    caption_parts = []
+    inline_link = None
+    for r in rich:
+        href = r.get("href")
+        if inline_link is not None:
+            # Notion sometimes splits one long linked URL into several
+            # runs, only the first of which reliably carries `href` --
+            # once we've seen the link start, everything else is part
+            # of that same URL, not additional caption text.
+            continue
+        if href:
+            inline_link = href
+        else:
+            caption_parts.append(r.get("plain_text", ""))
+    caption = "".join(caption_parts).rstrip(": ").strip()
+    if not caption:
+        caption = plain_text(item_block).rstrip(": ").strip()
     subject = {"caption": caption}
+    if inline_link:
+        subject["link"] = inline_link
     if item_block.get("has_children"):
         for child in get_children(item_block["id"]):
             if not is_list_item(child):
@@ -181,7 +209,7 @@ def parse_implicit_section(item):
     for child in get_children(item["id"]):
         if is_list_item(child):
             parse_list_item_as_section_content(child, subjects)
-    return label, subjects[:3]
+    return label, subjects[:MAX_SUBJECTS]
 
 
 def main():
@@ -201,6 +229,7 @@ def main():
             i += 1
             intro_parts = []
             sections = []
+            default_subjects = []  # flat leaf items with no H2/grouping at all
             expecting_h2_items = False  # True right after an explicit H2
             while i < len(blocks) and blocks[i]["type"] != "heading_1":
                 cur = blocks[i]
@@ -214,12 +243,18 @@ def main():
                     # implicit section: this item IS the section (each
                     # such top-level item starts its own new section)
                     sections.append(list(parse_implicit_section(cur)))
+                elif is_list_item(cur) and not sections:
+                    # flat: no H2, no grouping -- collect into one default
+                    # section (e.g. a straight numbered routine/checklist)
+                    parse_list_item_as_section_content(cur, default_subjects)
                 elif cur["type"] == "paragraph" and not sections:
                     text = plain_text(cur)
                     if text:
                         intro_parts.append(text)
                 i += 1
-            sections = [(label, subs[:3]) for label, subs in sections]
+            if default_subjects:
+                sections.append([DEFAULT_SECTION_LABEL, default_subjects])
+            sections = [(label, subs[:MAX_SUBJECTS]) for label, subs in sections]
             hotspots.append((clean_title, hotspot_id, " ".join(intro_parts), sections))
         else:
             i += 1

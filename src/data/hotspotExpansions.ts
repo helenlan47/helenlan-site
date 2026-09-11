@@ -93,6 +93,26 @@ export const hotspotExpansions: HotspotExpansion[] = [
       },
     ],
   },
+  {
+    hotspotId: "skincare-routine",
+    intro: "Placeholder intro -- replace with 1-2 real sentences about skincare routine.",
+    sections: [
+      {
+        id: "routine",
+        label: "Routine",
+        subjects: [
+        { caption: "POLA cleanser", link: "https://www.pola.com/products/1232/" },
+        { caption: "La Mer Revitalizing Mist", link: "https://www.cremedelamer.com/product/20180/26248/face/cleansers-and-toners/the-revitalizing-mist?srsltid=AfmBOorOjuHFl1jSfog4EZH7ivcewjmxE7-TuHnEo46LZPkoR2BfSS7f" },
+        { caption: "La Mer Treatment Lotion", link: "https://www.cremedelamer.com/product/11484/99912/prep/the-treatment-lotion?gclsrc=aw.ds&gad_source=1&gad_campaignid=21365407172&gbraid=0AAAAADSEbdYndufhNzILrFxxpE-d7z5wk&gclid=Cj0KCQjwzY7VBhDwARIsAFtPvBTmXD96TeqylUxjq_kTn1rwF3ZYBkAdL8oYTPjiH8gXPggl3xfkGAkaAjRXEALw_wcB#/sku/147757" },
+        { caption: "La Mer Eye Concentrate", link: "https://www.cremedelamer.com/product/20652/74983/face/eye-treatments/the-eye-concentrate?_gl=1*10w7zav*_up*MQ..*_gs*MQ..&gclid=Cj0KCQjwzY7VBhDwARIsAFtPvBTmXD96TeqylUxjq_kTn1rwF3ZYBkAdL8oYTPjiH8gXPggl3xfkGAkaAjRXEALw_wcB&gclsrc=aw.ds&gbraid=0AAAAADSEbdYndufhNzILrFxxpE-d7z5wk#/sku/115246" },
+        { caption: "La Mer Renewal Oil", link: "https://www.cremedelamer.com/product/32970/120231/face/face-oils/the-renewal-oil?_gl=1*b0d2am*_up*MQ" },
+        { caption: "Creme de La Mer", link: "https://www.cremedelamer.com/product/5834/12343/face/moisturizers/creme-de-la-mer?_gl=1*1uoahs6*_up*MQ" },
+        { caption: "La Mer Hand Treatment", link: "https://www.cremedelamer.com/product/5819/12350/body/the-hand-treatment?_gl=1*1uoahs6*_up*MQ" },
+        { caption: "La Mer Lip Balm", link: "https://www.cremedelamer.com/product/24131/64925/face/lip-care/the-lip-balm?_gl=1*1fqd2h9*_up*MQ" },
+        ],
+      },
+    ],
+  },
 ];
 
 export function getExpansion(hotspotId: string): HotspotExpansion | undefined {

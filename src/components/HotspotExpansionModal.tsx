@@ -69,21 +69,30 @@ function SectionCard({
             {section.label}
           </p>
           <div className="space-y-3">
-            {section.subjects.slice(0, 3).map((subject, i) => (
+            {section.subjects.map((subject, i) => (
               <div key={i} className="flex gap-2 items-center">
-                <img
-                  src={subject.photo || '/placeholder-photo.svg'}
-                  alt={subject.caption}
-                  className="w-12 h-12 rounded-md object-cover flex-shrink-0 cursor-zoom-in"
-                  style={{ border: '1px solid var(--color-line)' }}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = '/placeholder-photo.svg';
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (subject.photo) onEnlarge(subject);
-                  }}
-                />
+                {subject.photo ? (
+                  <img
+                    src={subject.photo}
+                    alt={subject.caption}
+                    className="w-12 h-12 rounded-md object-cover flex-shrink-0 cursor-zoom-in"
+                    style={{ border: '1px solid var(--color-line)' }}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/placeholder-photo.svg';
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onEnlarge(subject);
+                    }}
+                  />
+                ) : (
+                  <span
+                    className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] flex-shrink-0"
+                    style={{ backgroundColor: 'var(--color-line)', color: 'var(--color-ink-soft)' }}
+                  >
+                    {i + 1}
+                  </span>
+                )}
                 {subject.link ? (
                   <a
                     href={subject.link}
