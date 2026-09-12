@@ -113,6 +113,39 @@ export const hotspotExpansions: HotspotExpansion[] = [
       },
     ],
   },
+  {
+    hotspotId: "book-collection",
+    intro: "Placeholder intro -- replace with 1-2 real sentences about book collection.",
+    sections: [
+      {
+        id: "routine",
+        label: "Routine",
+        subjects: [
+        { caption: "The Education of an Idealist by Samantha Power" },
+        { caption: "The Snakehead by Patrick Radden Keefe" },
+        { caption: "Broken Code by Jeff Horwitz" },
+        ],
+      },
+    ],
+  },
+  {
+    hotspotId: "shoe-closet",
+    intro: "Placeholder intro -- replace with 1-2 real sentences about shoe closet.",
+    sections: [
+      {
+        id: "routine",
+        label: "Routine",
+        subjects: [
+        { caption: "Amina Muaddi Begum Slings" },
+        { caption: "Loro Piana Joan Loafers" },
+        { caption: "Onitsuka Tiger Mexico Beige Grass Green" },
+        { caption: "Hermas Oran Sandal in Gold" },
+        { caption: "Khaite Davis Knee Boots" },
+        { caption: "Dr. Martens 1460 Pascal Virginia Leather" },
+        ],
+      },
+    ],
+  },
 ];
 
 export function getExpansion(hotspotId: string): HotspotExpansion | undefined {
