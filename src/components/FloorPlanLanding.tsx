@@ -10,6 +10,9 @@ interface Hotspot {
   left: string;
   category: string;
   details: string;
+  /** If set, the hotspot is a plain link to this URL instead of opening
+   * the drawer/modal (e.g. the desk hotspot linking to /journal). */
+  href?: string;
 }
 
 // Positions are percentages anchored to the actual furniture icons in
@@ -74,12 +77,13 @@ const HOTSPOTS: Hotspot[] = [
     details: 'Daily Routine: Gentle Cleanser, Vitamin C Serum, Hyaluronic Acid, SPF 50.',
   },
   {
-    id: 'book-collection',
-    title: 'Book Collection',
+    id: 'journal',
+    title: 'Journal',
     top: '55.3%',
     left: '6.0%',
     category: 'Living Room',
-    details: 'A small personal library at the desk -- placeholder, add your books.',
+    details: 'Read the journal.',
+    href: '/journal',
   },
   {
     id: 'style-closet',
@@ -145,27 +149,42 @@ export default function FloorPlanLanding() {
         />
 
         {/* Hotspots Overlay Layer */}
-        {HOTSPOTS.map((spot) => (
-          <button
-            key={spot.id}
-            onClick={() => handleHotspotClick(spot)}
-            style={{ top: spot.top, left: spot.left }}
-            className="absolute transform -translate-x-1/2 -translate-y-1/2 group focus:outline-none"
-          >
-            {/* Animated Pulse Pin */}
-            <span className="relative flex h-6 w-6">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-6 w-6 bg-amber-500 items-center justify-center text-[10px] font-bold text-neutral-900">
-                +
+        {HOTSPOTS.map((spot) => {
+          const pinContent = (
+            <>
+              {/* Animated Pulse Pin */}
+              <span className="relative flex h-6 w-6">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-6 w-6 bg-amber-500 items-center justify-center text-[10px] font-bold text-neutral-900">
+                  +
+                </span>
               </span>
-            </span>
 
-            {/* Hover Tooltip Label */}
-            <span className="absolute left-1/2 -translate-x-1/2 bottom-8 opacity-0 group-hover:opacity-100 transition-opacity bg-neutral-900/90 text-amber-200 text-xs py-1 px-2.5 rounded whitespace-nowrap pointer-events-none border border-neutral-700">
-              {spot.title}
-            </span>
-          </button>
-        ))}
+              {/* Hover Tooltip Label */}
+              <span className="absolute left-1/2 -translate-x-1/2 bottom-8 opacity-0 group-hover:opacity-100 transition-opacity bg-neutral-900/90 text-amber-200 text-xs py-1 px-2.5 rounded whitespace-nowrap pointer-events-none border border-neutral-700">
+                {spot.title}
+              </span>
+            </>
+          );
+          const positionStyle = { top: spot.top, left: spot.left };
+          const className =
+            'absolute transform -translate-x-1/2 -translate-y-1/2 group focus:outline-none';
+
+          return spot.href ? (
+            <a key={spot.id} href={spot.href} style={positionStyle} className={className}>
+              {pinContent}
+            </a>
+          ) : (
+            <button
+              key={spot.id}
+              onClick={() => handleHotspotClick(spot)}
+              style={positionStyle}
+              className={className}
+            >
+              {pinContent}
+            </button>
+          );
+        })}
       </div>
 
       {/* Detail Modal / Drawer */}

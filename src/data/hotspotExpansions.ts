@@ -114,16 +114,17 @@ export const hotspotExpansions: HotspotExpansion[] = [
     ],
   },
   {
-    hotspotId: "book-collection",
-    intro: "Placeholder intro -- replace with 1-2 real sentences about book collection.",
+    hotspotId: "style-closet",
+    intro: "Placeholder intro -- replace with 1-2 real sentences about style closet.",
     sections: [
       {
         id: "routine",
         label: "Routine",
         subjects: [
-        { caption: "The Education of an Idealist by Samantha Power" },
-        { caption: "The Snakehead by Patrick Radden Keefe" },
-        { caption: "Broken Code by Jeff Horwitz" },
+        { caption: "Rohe" },
+        { caption: "Still Here Cool Jeans" },
+        { caption: "Rag and Bone Logan Featherweight Jeans" },
+        { caption: "Buck Mason white linen shirt" },
         ],
       },
     ],
@@ -139,9 +140,48 @@ export const hotspotExpansions: HotspotExpansion[] = [
         { caption: "Amina Muaddi Begum Slings" },
         { caption: "Loro Piana Joan Loafers" },
         { caption: "Onitsuka Tiger Mexico Beige Grass Green" },
-        { caption: "Hermas Oran Sandal in Gold" },
+        { caption: "Hermes Oran Sandal in Gold" },
         { caption: "Khaite Davis Knee Boots" },
         { caption: "Dr. Martens 1460 Pascal Virginia Leather" },
+        ],
+      },
+    ],
+  },
+  {
+    hotspotId: "bookshelf",
+    intro: "Placeholder intro -- replace with 1-2 real sentences about bookshelf.",
+    sections: [
+      {
+        id: "books",
+        label: "Books",
+        subjects: [
+        { caption: "Homegoing by Yaa Gyasi" },
+        { caption: "The Snakehead by Patrick Raden Keefe" },
+        { caption: "The Education of an Idealist by Samantha Power" },
+        { caption: "Broken Code by Jeff Horwtiz" },
+        { caption: "How to Know a Person by David Brooks" },
+        { caption: "Regime Change by Maggie Haberman, Jonathan Swan" },
+        ],
+      },
+      {
+        id: "movies",
+        label: "Movies",
+        subjects: [
+        { caption: "Project Hail Mary" },
+        { caption: "Sheep Detectives" },
+        { caption: "Coyote vs. Acme" },
+        { caption: "Tony" },
+        ],
+      },
+      {
+        id: "theater",
+        label: "Theater",
+        subjects: [
+        { caption: "Public Record by Public Works" },
+        { caption: "Operation Mincemeat" },
+        { caption: "Two Strangers Carry a Cake Across New York" },
+        { caption: "Maybe Happy Ending" },
+        { caption: "Fear of 13" },
         ],
       },
     ],

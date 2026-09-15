@@ -50,7 +50,9 @@ MAX_SUBJECTS = 10  # a card's back scrolls, so this is a sanity cap, not a UI li
 DEFAULT_SECTION_LABEL = "Routine"  # used when items sit directly under
                                     # the H1 with no H2 or grouping item
 
-# id mapping: matches the `id` field of HOTSPOTS in FloorPlanLanding.tsx
+# id mapping: matches the `id` field of HOTSPOTS in FloorPlanLanding.tsx.
+# Note: 'journal' is intentionally absent -- that hotspot links straight
+# to /journal and never shows the modal, so no Notion content maps to it.
 TITLE_TO_ID = {
     "espresso machine": "espresso",
     "bookshelf": "bookshelf",
@@ -59,25 +61,36 @@ TITLE_TO_ID = {
     "wine fridge": "wine-fridge",
     "travel magnets": "travel-magnets",
     "skincare routine": "skincare-routine",
-    "book collection": "book-collection",
     "style closet": "style-closet",
     "sports closet": "sports-closet",
     "shoe closet": "shoe-closet",
 }
 
+# H1 titles that don't share words with the hotspot title at all, so the
+# fuzzy match in resolve_hotspot() below can't find them on its own.
+ALIASES = {
+    "wardrobe": "style-closet",
+}
+
 
 def resolve_hotspot(raw_title):
     """Match an H1 title to a known hotspot id. Strips a leading
-    'Hotspot ' if present, then matches exactly or as a leading-word
-    prefix (e.g. 'Wine' -> 'wine fridge')."""
+    'Hotspot ' if present, then matches exactly, as a leading-word
+    prefix (e.g. 'Wine' -> 'wine fridge'), with spaces ignored (e.g.
+    'Book Shelf' -> 'bookshelf'), or via ALIASES."""
     t = raw_title.strip()
     if t.lower().startswith("hotspot "):
         t = t[len("hotspot "):].strip()
     key = t.lower()
     if key in TITLE_TO_ID:
         return t, TITLE_TO_ID[key]
+    if key in ALIASES:
+        return t, ALIASES[key]
+    key_nospace = key.replace(" ", "")
     for title, hid in TITLE_TO_ID.items():
         if title == key or title.startswith(key + " "):
+            return t, hid
+        if title.replace(" ", "") == key_nospace:
             return t, hid
     return t, None
 
