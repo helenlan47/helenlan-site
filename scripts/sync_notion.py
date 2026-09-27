@@ -313,8 +313,6 @@ def ts_string(s):
 def write_ts(hotspot_list):
     entries = []
     for hotspot_id, intro, sections in hotspot_list:
-        if not intro:
-            intro = f"Placeholder intro -- replace with 1-2 real sentences about {hotspot_id.replace('-', ' ')}."
         section_entries = []
         for label, subjects in sections:
             if not subjects:

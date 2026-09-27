@@ -156,12 +156,14 @@ export default function HotspotExpansionModal({ title, expansion, onClose }: Pro
             close ✕
           </button>
 
-          <h2 className="font-serif text-2xl mb-3" style={{ color: 'var(--color-ink)' }}>
+          <h2 className={`font-serif text-2xl ${expansion.intro ? 'mb-3' : 'mb-6'}`} style={{ color: 'var(--color-ink)' }}>
             {title}
           </h2>
-          <p className="text-sm mb-6 max-w-lg" style={{ color: 'var(--color-ink-soft)' }}>
-            {expansion.intro}
-          </p>
+          {expansion.intro && (
+            <p className="text-sm mb-6 max-w-lg" style={{ color: 'var(--color-ink-soft)' }}>
+              {expansion.intro}
+            </p>
+          )}
 
           <div className="flex flex-col sm:flex-row gap-4">
             {expansion.sections.map((section) => (

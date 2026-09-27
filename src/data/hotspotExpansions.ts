@@ -30,7 +30,7 @@ export interface HotspotExpansion {
 export const hotspotExpansions: HotspotExpansion[] = [
   {
     hotspotId: "espresso",
-    intro: "Placeholder intro -- replace with 1-2 real sentences about espresso.",
+    intro: "",
     sections: [
       {
         id: "beans",
@@ -63,7 +63,7 @@ export const hotspotExpansions: HotspotExpansion[] = [
   },
   {
     hotspotId: "wine-fridge",
-    intro: "Placeholder intro -- replace with 1-2 real sentences about wine fridge.",
+    intro: "",
     sections: [
       {
         id: "red",
@@ -95,7 +95,7 @@ export const hotspotExpansions: HotspotExpansion[] = [
   },
   {
     hotspotId: "bakery",
-    intro: "Placeholder intro -- replace with 1-2 real sentences about bakery.",
+    intro: "",
     sections: [
       {
         id: "went-back-for",
@@ -109,7 +109,7 @@ export const hotspotExpansions: HotspotExpansion[] = [
   },
   {
     hotspotId: "skincare-routine",
-    intro: "Placeholder intro -- replace with 1-2 real sentences about skincare routine.",
+    intro: "",
     sections: [
       {
         id: "routine",
@@ -129,7 +129,7 @@ export const hotspotExpansions: HotspotExpansion[] = [
   },
   {
     hotspotId: "style-closet",
-    intro: "Placeholder intro -- replace with 1-2 real sentences about style closet.",
+    intro: "",
     sections: [
       {
         id: "routine",
@@ -145,7 +145,7 @@ export const hotspotExpansions: HotspotExpansion[] = [
   },
   {
     hotspotId: "shoe-closet",
-    intro: "Placeholder intro -- replace with 1-2 real sentences about shoe closet.",
+    intro: "",
     sections: [
       {
         id: "routine",
@@ -163,7 +163,7 @@ export const hotspotExpansions: HotspotExpansion[] = [
   },
   {
     hotspotId: "bookshelf",
-    intro: "Placeholder intro -- replace with 1-2 real sentences about bookshelf.",
+    intro: "",
     sections: [
       {
         id: "books",
@@ -172,6 +172,7 @@ export const hotspotExpansions: HotspotExpansion[] = [
         { caption: "Homegoing by Yaa Gyasi" },
         { caption: "The Snakehead by Patrick Raden Keefe" },
         { caption: "The Education of an Idealist by Samantha Power" },
+        { caption: "Educated by Tara Westover" },
         { caption: "Broken Code by Jeff Horwtiz" },
         { caption: "How to Know a Person by David Brooks" },
         { caption: "Regime Change by Maggie Haberman, Jonathan Swan" },
