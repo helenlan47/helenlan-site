@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import CafeGame from '../components/CafeGame';
+import FloorPlanLanding from '../components/FloorPlanLanding';
 ---
 
 <!doctype html>
@@ -8,7 +8,7 @@ import CafeGame from '../components/CafeGame';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="A little café you can walk around in." />
+    <meta name="description" content="A home, a journal, and a map of favorite places." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,9 +16,9 @@ import CafeGame from '../components/CafeGame';
       href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <title>Home · helenlan</title>
+    <title>Apartment · helenlan</title>
   </head>
-  <body style="background: #2b1f1a;">
-    <CafeGame client:only="react" />
+  <body style="background: #fff;">
+    <FloorPlanLanding client:load />
   </body>
 </html>

@@ -94,6 +94,20 @@ export const hotspotExpansions: HotspotExpansion[] = [
     ],
   },
   {
+    hotspotId: "bakery",
+    intro: "Placeholder intro -- replace with 1-2 real sentences about bakery.",
+    sections: [
+      {
+        id: "went-back-for",
+        label: "Went back for",
+        subjects: [
+        { caption: "Radio Bakery" },
+        { caption: "Kora" },
+        ],
+      },
+    ],
+  },
+  {
     hotspotId: "skincare-routine",
     intro: "Placeholder intro -- replace with 1-2 real sentences about skincare routine.",
     sections: [

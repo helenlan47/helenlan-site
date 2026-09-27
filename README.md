@@ -1,8 +1,9 @@
 # helenlan.com
 
-Personal site: the homepage is an illustrated apartment floor plan with
-clickable hotspots (React + Framer Motion) that open into a journal and
-a map of favorite spots. Built with Astro, Tailwind CSS, and Mapbox
+Personal site: the homepage is a little pixel-art café you walk around
+in (canvas game + React), whose objects open the same hotspot content as
+the original illustrated apartment floor plan (still live at /apartment),
+plus a journal and a map of favorite spots. Built with Astro, Tailwind CSS, and Mapbox
 GL JS.
 
 ## Setup
@@ -100,7 +101,10 @@ the page never blanks out what's already live.
 ```
 src/
   components/
-    FloorPlanLanding.tsx       homepage: floor plan + hotspots (React)
+    CafeGame.tsx               homepage: the café (UI, modals, jukebox)
+    cafeEngine.ts              café canvas engine: room art, movement, sagehens
+    cafeNetwork.ts             multiplayer transport (local tabs for now)
+    FloorPlanLanding.tsx       /apartment: floor plan + hotspots (React)
     HotspotExpansionModal.tsx  the flip-card modal template
   content/journal/             markdown journal posts
   data/
@@ -109,7 +113,8 @@ src/
   layouts/Layout.astro         shared page shell (nav, fonts, footer) --
                                 used by journal/map, not the homepage
   pages/
-    index.astro                home (floor plan)
+    index.astro                home (café)
+    apartment.astro            the original floor plan homepage
     journal/index.astro        journal list
     journal/[id].astro         single post
     map.astro                  interactive map

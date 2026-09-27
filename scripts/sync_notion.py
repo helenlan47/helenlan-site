@@ -64,6 +64,8 @@ TITLE_TO_ID = {
     "style closet": "style-closet",
     "sports closet": "sports-closet",
     "shoe closet": "shoe-closet",
+    # café-only: the bakery case at /cafe (no apartment hotspot)
+    "bakery": "bakery",
 }
 
 # H1 titles that don't share words with the hotspot title at all, so the

@@ -19,7 +19,7 @@ interface Hotspot {
 // /public/floorplan-illustrated.jpg (2174x1984, unlabeled illustration).
 // Re-measure if you swap the image -- icon positions shift between
 // image generations even at the same aspect ratio.
-const HOTSPOTS: Hotspot[] = [
+export const HOTSPOTS: Hotspot[] = [
   {
     id: 'espresso',
     title: 'Espresso Machine',
